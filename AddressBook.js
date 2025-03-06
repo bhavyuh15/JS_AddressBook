@@ -48,20 +48,26 @@ class Contact {
         }
         return email;
     }
+
+    updateDetails(updatedData) {
+        Object.keys(updatedData).forEach(key => {
+            if (this[key] !== undefined) {
+                this[key] = updatedData[key];
+            }
+        });
+    }
 }
 
 class AddressBook {
     constructor() {
-        this.contacts = []; // Address book array
+        this.contacts = [];
     }
 
     addContact(contact) {
-        // Check if contact already exists (based on email)
         if (this.contacts.some(c => c.email === contact.email)) {
             console.log(`Error: Contact with email ${contact.email} already exists.`);
             return;
         }
-
         this.contacts.push(contact);
         console.log("Contact added successfully!");
     }
@@ -76,6 +82,20 @@ class AddressBook {
             console.log(`${index + 1}. ${contact.firstName} ${contact.lastName} - ${contact.phone}, ${contact.email}`);
         });
     }
+
+    findContact(firstName, lastName) {
+        return this.contacts.find(contact => contact.firstName === firstName && contact.lastName === lastName);
+    }
+
+    editContact(firstName, lastName, updatedData) {
+        const contact = this.findContact(firstName, lastName);
+        if (contact) {
+            contact.updateDetails(updatedData);
+            console.log("Contact updated successfully!");
+        } else {
+            console.log(`Error: Contact ${firstName} ${lastName} not found.`);
+        }
+    }
 }
 
 // Create an Address Book
@@ -88,14 +108,15 @@ try {
 
     const contact2 = new Contact("Alice", "Smith", "456 Elm St", "Pune", "Maharashtra", "411002", "9876543210", "abc.xyz@bridgelabz.co.in");
     myAddressBook.addContact(contact2);
-    
-    // Duplicate contact test
-    const duplicateContact = new Contact("John", "Doe", "123 Main St", "Mumbai", "Maharashtra", "400001", "+91 9876543210", "abc@bridgelabz.co");
-    myAddressBook.addContact(duplicateContact); // Should show an error
-
 } catch (error) {
     console.error("Error:", error.message);
 }
 
 // Display Address Book
+myAddressBook.displayContacts();
+
+// Edit Contact
+myAddressBook.editContact("John", "Doe", { phone: "9876543211", city: "Delhi" });
+
+// Display Updated Contacts
 myAddressBook.displayContacts();
