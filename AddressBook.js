@@ -50,23 +50,52 @@ class Contact {
     }
 }
 
-// Test Cases
-try {
-    const contact1 = new Contact(
-        "John", "Doe", "123 Main St", "Mumbai", "Maharashtra",
-        "400001", "+91 9876543210", "abc@bridgelabz.co"
-    );
-    console.log("Valid Contact:", contact1);
-} catch (error) {
-    console.error(error.message);
+class AddressBook {
+    constructor() {
+        this.contacts = []; // Address book array
+    }
+
+    addContact(contact) {
+        // Check if contact already exists (based on email)
+        if (this.contacts.some(c => c.email === contact.email)) {
+            console.log(`Error: Contact with email ${contact.email} already exists.`);
+            return;
+        }
+
+        this.contacts.push(contact);
+        console.log("Contact added successfully!");
+    }
+
+    displayContacts() {
+        if (this.contacts.length === 0) {
+            console.log("Address book is empty.");
+            return;
+        }
+        console.log("Address Book Contacts:");
+        this.contacts.forEach((contact, index) => {
+            console.log(`${index + 1}. ${contact.firstName} ${contact.lastName} - ${contact.phone}, ${contact.email}`);
+        });
+    }
 }
 
+// Create an Address Book
+const myAddressBook = new AddressBook();
+
+// Add Contacts
 try {
-    const contact2 = new Contact(
-        "john", "doe", "123", "NY", "CA",
-        "12345", "1234567890", "wrong@xyz.com"
-    );
-    console.log("Valid Contact:", contact2);
+    const contact1 = new Contact("John", "Doe", "123 Main St", "Mumbai", "Maharashtra", "400001", "+91 9876543210", "abc@bridgelabz.co");
+    myAddressBook.addContact(contact1);
+
+    const contact2 = new Contact("Alice", "Smith", "456 Elm St", "Pune", "Maharashtra", "411002", "9876543210", "abc.xyz@bridgelabz.co.in");
+    myAddressBook.addContact(contact2);
+    
+    // Duplicate contact test
+    const duplicateContact = new Contact("John", "Doe", "123 Main St", "Mumbai", "Maharashtra", "400001", "+91 9876543210", "abc@bridgelabz.co");
+    myAddressBook.addContact(duplicateContact); // Should show an error
+
 } catch (error) {
     console.error("Error:", error.message);
 }
+
+// Display Address Book
+myAddressBook.displayContacts();
