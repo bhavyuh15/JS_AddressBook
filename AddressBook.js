@@ -56,10 +56,13 @@ class AddressBook {
     }
 
     addContact(contact) {
-        if (this.contacts.some(c => c.email === contact.email)) {
-            console.log(`Error: Contact with email ${contact.email} already exists.`);
+        // **Using filter() to check if the person already exists**
+        const duplicate = this.contacts.filter(c => c.firstName === contact.firstName && c.lastName === contact.lastName);
+        if (duplicate.length > 0) {
+            console.log(`Error: Contact with name ${contact.firstName} ${contact.lastName} already exists.`);
             return;
         }
+        
         this.contacts.push(contact);
         console.log("Contact added successfully!");
     }
@@ -70,9 +73,11 @@ class AddressBook {
             return;
         }
         console.log("Address Book Contacts:");
-        this.contacts.forEach((contact, index) => {
-            console.log(`${index + 1}. ${contact.firstName} ${contact.lastName} - ${contact.phone}, ${contact.email}`);
-        });
+        
+        // **Using map() to format contacts**
+        this.contacts.map((contact, index) => 
+            console.log(`${index + 1}. ${contact.firstName} ${contact.lastName} - ${contact.phone}, ${contact.email}`)
+        );
     }
 
     findContact(firstName, lastName) {
@@ -104,6 +109,7 @@ class AddressBook {
     }
 
     countContacts() {
+        // **Using reduce() to count contacts**
         const totalContacts = this.contacts.reduce(count => count + 1, 0);
         console.log(`Total number of contacts: ${totalContacts}`);
         return totalContacts;
@@ -120,6 +126,9 @@ try {
 
     const contact2 = new Contact("Alice", "Smith", "456 Elm St", "Pune", "Maharashtra", "411002", "9876543210", "abc.xyz@bridgelabz.co.in");
     myAddressBook.addContact(contact2);
+
+    const contact3 = new Contact("John", "Doe", "789 Oak St", "Delhi", "Delhi", "110001", "+91 8765432109", "abc.def@bridgelabz.co");
+    myAddressBook.addContact(contact3); // ❌ Should show an error (Duplicate)
 } catch (error) {
     console.error("Error:", error.message);
 }
