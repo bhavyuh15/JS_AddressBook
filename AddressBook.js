@@ -70,7 +70,7 @@ class AddressBook {
             console.log("Address book is empty.");
             return;
         }
-        console.log("Address Book Contacts:");
+        console.log("\n📖 Address Book Contacts:");
         this.contacts.map((contact, index) =>
             console.log(`${index + 1}. ${contact.firstName} ${contact.lastName} - ${contact.city}, ${contact.state}`)
         );
@@ -118,7 +118,7 @@ class AddressBook {
             return;
         }
 
-        console.log(`Contacts in ${city}:`);
+        console.log(`\n📍 Contacts in ${city}:`);
         contactsInCity.map(contact => console.log(`${contact.firstName} ${contact.lastName} - ${contact.phone}, ${contact.email}`));
 
         const count = contactsInCity.reduce(count => count + 1, 0);
@@ -133,38 +133,38 @@ class AddressBook {
             return;
         }
 
-        console.log(`Contacts in ${state}:`);
+        console.log(`\n🌍 Contacts in ${state}:`);
         contactsInState.map(contact => console.log(`${contact.firstName} ${contact.lastName} - ${contact.phone}, ${contact.email}`));
 
         const count = contactsInState.reduce(count => count + 1, 0);
         console.log(`Total contacts in ${state}: ${count}`);
     }
+
+    viewByCity(city) {
+        this.searchByCity(city);
+    }
+
+    viewByState(state) {
+        this.searchByState(state);
+    }
 }
 
-// Create Address Book & Add Contacts
+// Example Usage
 const myAddressBook = new AddressBook();
 
 try {
-    const contact1 = new Contact("John", "Doe", "123 Main St", "Mumbai", "Maharashtra", "400001", "+91 9876543210", "abc@bridgelabz.co");
-    myAddressBook.addContact(contact1);
-
-    const contact2 = new Contact("Alice", "Smith", "456 Elm St", "Pune", "Maharashtra", "411002", "9876543210", "abc.xyz@bridgelabz.co.in");
-    myAddressBook.addContact(contact2);
-
-    const contact3 = new Contact("Bob", "Johnson", "789 Oak St", "Delhi", "Delhi", "110001", "+91 8765432109", "abc.def@bridgelabz.co");
-    myAddressBook.addContact(contact3);
-
-    const contact4 = new Contact("John", "Doe", "000 New St", "Delhi", "Delhi", "110001", "+91 9999999999", "abc.test@bridgelabz.co");
-    myAddressBook.addContact(contact4); // ❌ Should show an error (Duplicate)
+    myAddressBook.addContact(new Contact("John", "Doe", "123 Main St", "Mumbai", "Maharashtra", "400001", "+91 9876543210", "abc@bridgelabz.co"));
+    myAddressBook.addContact(new Contact("Alice", "Smith", "456 Elm St", "Pune", "Maharashtra", "411002", "9876543210", "abc.xyz@bridgelabz.co.in"));
+    myAddressBook.addContact(new Contact("Bob", "Johnson", "789 Oak St", "Delhi", "Delhi", "110001", "+91 8765432109", "abc.def@bridgelabz.co"));
 } catch (error) {
     console.error("Error:", error.message);
 }
 
-// Search Contacts by City
-myAddressBook.searchByCity("Mumbai");
+// View persons by City
+myAddressBook.viewByCity("Mumbai");
 
-// Search Contacts by State
-myAddressBook.searchByState("Maharashtra");
+// View persons by State
+myAddressBook.viewByState("Maharashtra");
 
 // Display All Contacts
 myAddressBook.displayContacts();
