@@ -50,7 +50,7 @@ class Contact {
     }
 
     toString() {
-        return `${this.getFullName()} - ${this.city}, ${this.state} | Phone: ${this.phone} | Email: ${this.email}`;
+        return `${this.getFullName()} - ${this.city}, ${this.state}, Zip: ${this.zip} | Phone: ${this.phone} | Email: ${this.email}`;
     }
 }
 
@@ -62,25 +62,29 @@ class AddressBook {
     addContact(contact) {
         let duplicate = this.contacts.some(c => c.firstName === contact.firstName && c.lastName === contact.lastName);
         if (duplicate) {
-            console.log(` Error: Contact ${contact.getFullName()} already exists.`);
+            console.log(`❌ Error: Contact ${contact.getFullName()} already exists.`);
             return;
         }
         this.contacts.push(contact);
-        console.log(` Contact ${contact.getFullName()} added successfully!`);
+        console.log(`✅ Contact ${contact.getFullName()} added successfully!`);
     }
 
     displayContacts() {
         if (this.contacts.length === 0) {
-            console.log(" Address book is empty.");
+            console.log("📭 Address book is empty.");
             return;
         }
-        console.log("\n Address Book Contacts:");
+        console.log("\n📖 Address Book Contacts:");
         this.contacts.forEach(contact => console.log(contact.toString()));
     }
 
-    sortContactsByName() {
-        this.contacts.sort((a, b) => a.getFullName().localeCompare(b.getFullName()));
-        console.log("\n Sorted Contacts by Name:");
+    sortContactsByField(field) {
+        if (!["firstName", "city", "state", "zip"].includes(field)) {
+            console.log("❌ Invalid field! You can only sort by 'firstName', 'city', 'state', or 'zip'.");
+            return;
+        }
+        this.contacts.sort((a, b) => a[field].toString().localeCompare(b[field].toString()));
+        console.log(`\n🔠 Sorted Contacts by ${field.charAt(0).toUpperCase() + field.slice(1)}:`);
         this.displayContacts();
     }
 
@@ -88,21 +92,21 @@ class AddressBook {
         let index = this.contacts.findIndex(contact => contact.firstName === firstName && contact.lastName === lastName);
         if (index !== -1) {
             this.contacts.splice(index, 1);
-            console.log(` Contact ${firstName} ${lastName} deleted successfully.`);
+            console.log(`✅ Contact ${firstName} ${lastName} deleted successfully.`);
         } else {
-            console.log(` Contact ${firstName} ${lastName} not found.`);
+            console.log(`❌ Contact ${firstName} ${lastName} not found.`);
         }
     }
 
     searchByCity(city) {
         let cityContacts = this.contacts.filter(contact => contact.city.toLowerCase() === city.toLowerCase());
-        console.log(`\n Contacts in ${city}:`);
+        console.log(`\n📍 Contacts in ${city}:`);
         cityContacts.length ? cityContacts.forEach(contact => console.log(contact.toString())) : console.log("No contacts found.");
     }
 
     searchByState(state) {
         let stateContacts = this.contacts.filter(contact => contact.state.toLowerCase() === state.toLowerCase());
-        console.log(`\n Contacts in ${state}:`);
+        console.log(`\n🌍 Contacts in ${state}:`);
         stateContacts.length ? stateContacts.forEach(contact => console.log(contact.toString())) : console.log("No contacts found.");
     }
 
@@ -128,10 +132,14 @@ try {
     myAddressBook.addContact(new Contact("John", "Doe", "123 Main St", "Mumbai", "Maharashtra", "400001", "+91 9876543210", "john.doe@example.com"));
     myAddressBook.addContact(new Contact("Alice", "Smith", "456 Elm St", "Pune", "Maharashtra", "411002", "9876543210", "alice.smith@example.com"));
     myAddressBook.addContact(new Contact("Bob", "Johnson", "789 Oak St", "Delhi", "Delhi", "110001", "+91 8765432109", "bob.johnson@example.com"));
+    myAddressBook.addContact(new Contact("Charlie", "Brown", "159 Maple Ave", "Mumbai", "Maharashtra", "400005", "+91 7890123456", "charlie.brown@example.com"));
 
     myAddressBook.displayContacts();
     
-    myAddressBook.sortContactsByName();
+    myAddressBook.sortContactsByField("firstName"); // Sort by Name
+    myAddressBook.sortContactsByField("city");      // Sort by City
+    myAddressBook.sortContactsByField("state");     // Sort by State
+    myAddressBook.sortContactsByField("zip");       // Sort by Zip
 
     myAddressBook.searchByCity("Mumbai");
     myAddressBook.searchByState("Maharashtra");
