@@ -111,41 +111,45 @@ class AddressBook {
     }
 
     searchByCity(city) {
-        const contactsInCity = this.contacts.filter(contact => contact.city.toLowerCase() === city.toLowerCase());
-
-        if (contactsInCity.length === 0) {
-            console.log(`No contacts found in ${city}.`);
-            return;
-        }
-
-        console.log(`\n📍 Contacts in ${city}:`);
-        contactsInCity.map(contact => console.log(`${contact.firstName} ${contact.lastName} - ${contact.phone}, ${contact.email}`));
-
-        const count = contactsInCity.reduce(count => count + 1, 0);
-        console.log(`Total contacts in ${city}: ${count}`);
+        return this.contacts.filter(contact => contact.city.toLowerCase() === city.toLowerCase());
     }
 
     searchByState(state) {
-        const contactsInState = this.contacts.filter(contact => contact.state.toLowerCase() === state.toLowerCase());
+        return this.contacts.filter(contact => contact.state.toLowerCase() === state.toLowerCase());
+    }
 
-        if (contactsInState.length === 0) {
-            console.log(`No contacts found in ${state}.`);
-            return;
-        }
+    countByCity(city) {
+        const count = this.searchByCity(city).reduce(count => count + 1, 0);
+        console.log(`Total contacts in ${city}: ${count}`);
+        return count;
+    }
 
-        console.log(`\n🌍 Contacts in ${state}:`);
-        contactsInState.map(contact => console.log(`${contact.firstName} ${contact.lastName} - ${contact.phone}, ${contact.email}`));
-
-        const count = contactsInState.reduce(count => count + 1, 0);
+    countByState(state) {
+        const count = this.searchByState(state).reduce(count => count + 1, 0);
         console.log(`Total contacts in ${state}: ${count}`);
+        return count;
     }
 
     viewByCity(city) {
-        this.searchByCity(city);
+        const contacts = this.searchByCity(city);
+        if (contacts.length === 0) {
+            console.log(`No contacts found in ${city}.`);
+            return;
+        }
+        console.log(`\n📍 Contacts in ${city}:`);
+        contacts.map(contact => console.log(`${contact.firstName} ${contact.lastName} - ${contact.phone}, ${contact.email}`));
+        this.countByCity(city);
     }
 
     viewByState(state) {
-        this.searchByState(state);
+        const contacts = this.searchByState(state);
+        if (contacts.length === 0) {
+            console.log(`No contacts found in ${state}.`);
+            return;
+        }
+        console.log(`\n🌍 Contacts in ${state}:`);
+        contacts.map(contact => console.log(`${contact.firstName} ${contact.lastName} - ${contact.phone}, ${contact.email}`));
+        this.countByState(state);
     }
 }
 
@@ -166,17 +170,9 @@ myAddressBook.viewByCity("Mumbai");
 // View persons by State
 myAddressBook.viewByState("Maharashtra");
 
+// Count Contacts by City & State
+myAddressBook.countByCity("Pune");
+myAddressBook.countByState("Delhi");
+
 // Display All Contacts
 myAddressBook.displayContacts();
-
-// Count Contacts
-myAddressBook.countContacts();
-
-// Edit Contact
-myAddressBook.editContact("Alice", "Smith", { phone: "+91 9123456789", city: "Nagpur" });
-
-// Delete Contact
-myAddressBook.deleteContact("John", "Doe");
-
-// Count Contacts Again
-myAddressBook.countContacts();
