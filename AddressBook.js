@@ -56,13 +56,11 @@ class AddressBook {
     }
 
     addContact(contact) {
-        // **Using filter() to check if the person already exists**
         const duplicate = this.contacts.filter(c => c.firstName === contact.firstName && c.lastName === contact.lastName);
         if (duplicate.length > 0) {
             console.log(`Error: Contact with name ${contact.firstName} ${contact.lastName} already exists.`);
             return;
         }
-        
         this.contacts.push(contact);
         console.log("Contact added successfully!");
     }
@@ -73,11 +71,15 @@ class AddressBook {
             return;
         }
         console.log("Address Book Contacts:");
-        
-        // **Using map() to format contacts**
-        this.contacts.map((contact, index) => 
-            console.log(`${index + 1}. ${contact.firstName} ${contact.lastName} - ${contact.phone}, ${contact.email}`)
+        this.contacts.map((contact, index) =>
+            console.log(`${index + 1}. ${contact.firstName} ${contact.lastName} - ${contact.city}, ${contact.state}`)
         );
+    }
+
+    countContacts() {
+        const totalContacts = this.contacts.reduce(count => count + 1, 0);
+        console.log(`Total number of contacts: ${totalContacts}`);
+        return totalContacts;
     }
 
     findContact(firstName, lastName) {
@@ -108,18 +110,40 @@ class AddressBook {
         }
     }
 
-    countContacts() {
-        // **Using reduce() to count contacts**
-        const totalContacts = this.contacts.reduce(count => count + 1, 0);
-        console.log(`Total number of contacts: ${totalContacts}`);
-        return totalContacts;
+    searchByCity(city) {
+        const contactsInCity = this.contacts.filter(contact => contact.city.toLowerCase() === city.toLowerCase());
+
+        if (contactsInCity.length === 0) {
+            console.log(`No contacts found in ${city}.`);
+            return;
+        }
+
+        console.log(`Contacts in ${city}:`);
+        contactsInCity.map(contact => console.log(`${contact.firstName} ${contact.lastName} - ${contact.phone}, ${contact.email}`));
+
+        const count = contactsInCity.reduce(count => count + 1, 0);
+        console.log(`Total contacts in ${city}: ${count}`);
+    }
+
+    searchByState(state) {
+        const contactsInState = this.contacts.filter(contact => contact.state.toLowerCase() === state.toLowerCase());
+
+        if (contactsInState.length === 0) {
+            console.log(`No contacts found in ${state}.`);
+            return;
+        }
+
+        console.log(`Contacts in ${state}:`);
+        contactsInState.map(contact => console.log(`${contact.firstName} ${contact.lastName} - ${contact.phone}, ${contact.email}`));
+
+        const count = contactsInState.reduce(count => count + 1, 0);
+        console.log(`Total contacts in ${state}: ${count}`);
     }
 }
 
-// Create an Address Book
+// Create Address Book & Add Contacts
 const myAddressBook = new AddressBook();
 
-// Add Contacts
 try {
     const contact1 = new Contact("John", "Doe", "123 Main St", "Mumbai", "Maharashtra", "400001", "+91 9876543210", "abc@bridgelabz.co");
     myAddressBook.addContact(contact1);
@@ -127,20 +151,32 @@ try {
     const contact2 = new Contact("Alice", "Smith", "456 Elm St", "Pune", "Maharashtra", "411002", "9876543210", "abc.xyz@bridgelabz.co.in");
     myAddressBook.addContact(contact2);
 
-    const contact3 = new Contact("John", "Doe", "789 Oak St", "Delhi", "Delhi", "110001", "+91 8765432109", "abc.def@bridgelabz.co");
-    myAddressBook.addContact(contact3); // ❌ Should show an error (Duplicate)
+    const contact3 = new Contact("Bob", "Johnson", "789 Oak St", "Delhi", "Delhi", "110001", "+91 8765432109", "abc.def@bridgelabz.co");
+    myAddressBook.addContact(contact3);
+
+    const contact4 = new Contact("John", "Doe", "000 New St", "Delhi", "Delhi", "110001", "+91 9999999999", "abc.test@bridgelabz.co");
+    myAddressBook.addContact(contact4); // ❌ Should show an error (Duplicate)
 } catch (error) {
     console.error("Error:", error.message);
 }
 
-// Display Address Book
+// Search Contacts by City
+myAddressBook.searchByCity("Mumbai");
+
+// Search Contacts by State
+myAddressBook.searchByState("Maharashtra");
+
+// Display All Contacts
 myAddressBook.displayContacts();
 
-// Count Contacts using reduce()
+// Count Contacts
 myAddressBook.countContacts();
+
+// Edit Contact
+myAddressBook.editContact("Alice", "Smith", { phone: "+91 9123456789", city: "Nagpur" });
 
 // Delete Contact
 myAddressBook.deleteContact("John", "Doe");
 
-// Count Contacts Again using reduce()
+// Count Contacts Again
 myAddressBook.countContacts();
