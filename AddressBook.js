@@ -48,14 +48,6 @@ class Contact {
         }
         return email;
     }
-
-    updateDetails(updatedData) {
-        Object.keys(updatedData).forEach(key => {
-            if (this[key] !== undefined) {
-                this[key] = updatedData[key];
-            }
-        });
-    }
 }
 
 class AddressBook {
@@ -90,8 +82,22 @@ class AddressBook {
     editContact(firstName, lastName, updatedData) {
         const contact = this.findContact(firstName, lastName);
         if (contact) {
-            contact.updateDetails(updatedData);
+            Object.keys(updatedData).forEach(key => {
+                if (contact[key] !== undefined) {
+                    contact[key] = updatedData[key];
+                }
+            });
             console.log("Contact updated successfully!");
+        } else {
+            console.log(`Error: Contact ${firstName} ${lastName} not found.`);
+        }
+    }
+
+    deleteContact(firstName, lastName) {
+        const index = this.contacts.findIndex(contact => contact.firstName === firstName && contact.lastName === lastName);
+        if (index !== -1) {
+            this.contacts.splice(index, 1);
+            console.log(`Contact ${firstName} ${lastName} deleted successfully!`);
         } else {
             console.log(`Error: Contact ${firstName} ${lastName} not found.`);
         }
@@ -115,8 +121,8 @@ try {
 // Display Address Book
 myAddressBook.displayContacts();
 
-// Edit Contact
-myAddressBook.editContact("John", "Doe", { phone: "9876543211", city: "Delhi" });
+// Delete Contact
+myAddressBook.deleteContact("John", "Doe");
 
 // Display Updated Contacts
 myAddressBook.displayContacts();
