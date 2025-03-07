@@ -62,29 +62,29 @@ class AddressBook {
     addContact(contact) {
         let duplicate = this.contacts.some(c => c.firstName === contact.firstName && c.lastName === contact.lastName);
         if (duplicate) {
-            console.log(`❌ Error: Contact ${contact.getFullName()} already exists.`);
+            console.log(` Error: Contact ${contact.getFullName()} already exists.`);
             return;
         }
         this.contacts.push(contact);
-        console.log(`✅ Contact ${contact.getFullName()} added successfully!`);
+        console.log(` Contact ${contact.getFullName()} added successfully!`);
     }
 
     displayContacts() {
         if (this.contacts.length === 0) {
-            console.log("📭 Address book is empty.");
+            console.log(" Address book is empty.");
             return;
         }
-        console.log("\n📖 Address Book Contacts:");
+        console.log("\n Address Book Contacts:");
         this.contacts.forEach(contact => console.log(contact.toString()));
     }
 
     sortContactsByField(field) {
         if (!["firstName", "city", "state", "zip"].includes(field)) {
-            console.log("❌ Invalid field! You can only sort by 'firstName', 'city', 'state', or 'zip'.");
+            console.log(" Invalid field! You can only sort by 'firstName', 'city', 'state', or 'zip'.");
             return;
         }
         this.contacts.sort((a, b) => a[field].toString().localeCompare(b[field].toString()));
-        console.log(`\n🔠 Sorted Contacts by ${field.charAt(0).toUpperCase() + field.slice(1)}:`);
+        console.log(`\n Sorted Contacts by ${field.charAt(0).toUpperCase() + field.slice(1)}:`);
         this.displayContacts();
     }
 
@@ -92,21 +92,21 @@ class AddressBook {
         let index = this.contacts.findIndex(contact => contact.firstName === firstName && contact.lastName === lastName);
         if (index !== -1) {
             this.contacts.splice(index, 1);
-            console.log(`✅ Contact ${firstName} ${lastName} deleted successfully.`);
+            console.log(` Contact ${firstName} ${lastName} deleted successfully.`);
         } else {
-            console.log(`❌ Contact ${firstName} ${lastName} not found.`);
+            console.log(` Contact ${firstName} ${lastName} not found.`);
         }
     }
 
     searchByCity(city) {
         let cityContacts = this.contacts.filter(contact => contact.city.toLowerCase() === city.toLowerCase());
-        console.log(`\n📍 Contacts in ${city}:`);
+        console.log(`\n Contacts in ${city}:`);
         cityContacts.length ? cityContacts.forEach(contact => console.log(contact.toString())) : console.log("No contacts found.");
     }
 
     searchByState(state) {
         let stateContacts = this.contacts.filter(contact => contact.state.toLowerCase() === state.toLowerCase());
-        console.log(`\n🌍 Contacts in ${state}:`);
+        console.log(`\n Contacts in ${state}:`);
         stateContacts.length ? stateContacts.forEach(contact => console.log(contact.toString())) : console.log("No contacts found.");
     }
 
