@@ -102,6 +102,12 @@ class AddressBook {
             console.log(`Error: Contact ${firstName} ${lastName} not found.`);
         }
     }
+
+    countContacts() {
+        const totalContacts = this.contacts.reduce(count => count + 1, 0);
+        console.log(`Total number of contacts: ${totalContacts}`);
+        return totalContacts;
+    }
 }
 
 // Create an Address Book
@@ -121,8 +127,11 @@ try {
 // Display Address Book
 myAddressBook.displayContacts();
 
+// Count Contacts using reduce()
+myAddressBook.countContacts();
+
 // Delete Contact
 myAddressBook.deleteContact("John", "Doe");
 
-// Display Updated Contacts
-myAddressBook.displayContacts();
+// Count Contacts Again using reduce()
+myAddressBook.countContacts();
